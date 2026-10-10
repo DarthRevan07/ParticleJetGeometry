@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jettopo"
+version = "0.1.0"
+description = "Benchmarking persistent homology and simplicial message passing for jet tagging"
+authors = [{ name = "Tanmay Bakshi" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=2.0",
+    "tables>=3.8",        # pandas.read_hdf for the top-tagging .h5 files
+    "gudhi>=3.9",
+    "scikit-learn>=1.3",
+    "torch>=2.1",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+physics = ["energyflow>=1.3", "fastjet>=3.4", "awkward>=2.6", "vector>=1.4"]
+graphs = ["torch_geometric>=2.5"]
+multiparameter = ["multipers"]
+trees = ["xgboost>=2.0"]
+viz = ["matplotlib>=3.7", "ipywidgets>=8"]
+console = ["rich>=13"]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: long-running tests (deselect with -m 'not slow')",
+    "needs_data: requires the downloaded datasets on disk",
+]

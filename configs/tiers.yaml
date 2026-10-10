@@ -1,0 +1,36 @@
+# Compute tiers (see specs/00_overview.md and the proposal's Methods section).
+# Evaluation always uses the FULL official test split; only training is subsampled.
+
+top_tagging:
+  data_dir: data/top            # output of scripts/convert_top.py
+  max_particles: 100
+  subsets_seed: 0
+  train_sizes: [30000, 100000, 300000]   # nested, stratified, from the official train split
+  val_size: 100000                       # from the official val split
+  test: full                             # all ~400k official test jets
+
+quark_gluon:
+  max_particles: 100
+  split: file_based                      # files 0-15 train pool, 16-17 val, 18-19 test
+  train_sizes: [100000, 300000]
+  val_size: 100000
+  test: full                             # 200k Pythia (files 18-19); Herwig files 18-19 for the shift test
+
+tiers:
+  dev:
+    train_size: 30000
+    seeds: [0]
+    where: laptop_cpu
+  main:
+    train_size: 300000
+    seeds: [0, 1, 2, 3, 4]
+    where: laptop_cpu_and_colab_t4      # ParticleNet on Colab T4
+  simplicial:
+    train_size: 100000
+    seeds: [0, 1, 2]
+    where: colab_t4
+  anchor:
+    train_size: full                     # 1.2M official train, ParticleNet and PFN only
+    seeds: [0]
+    epochs: 20
+    where: colab_t4
